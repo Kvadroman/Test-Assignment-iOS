@@ -16,12 +16,12 @@ final class CardsViewController<T: CardsViewModeling>: UIViewController, Control
     var cancellables: Set<AnyCancellable> = []
     var cardMask: CardMaskProtocol?
     
-    // MARK: - Replies Adapter
+    // MARK: - Card Adapter
     private lazy var cardsAdapter: Adapter<Card> = {
         return Adapter(tableView: cardsTableView) { [weak self] tableView in
             self?.registerCells(tableView)
         } cellIdentifier: { [weak self] _ in
-            self?.getCommentCellIdentifier() ?? "Cell"
+            self?.getCardCellIdentifier() ?? "Cell"
         } render: { [weak self] item, cell in
             self?.renderCell(item, cell)
         }
@@ -108,10 +108,10 @@ final class CardsViewController<T: CardsViewModeling>: UIViewController, Control
 // MARK: - Cards Adapter
 extension CardsViewController {
     private func registerCells(_ tableView: UITableView) {
-        tableView.register(CardTableViewCell.nib(), forCellReuseIdentifier: getCommentCellIdentifier())
+        tableView.register(CardTableViewCell.nib(), forCellReuseIdentifier: getCardCellIdentifier())
     }
     
-    private func getCommentCellIdentifier() -> String {
+    private func getCardCellIdentifier() -> String {
         CardTableViewCell.identifier
     }
     
