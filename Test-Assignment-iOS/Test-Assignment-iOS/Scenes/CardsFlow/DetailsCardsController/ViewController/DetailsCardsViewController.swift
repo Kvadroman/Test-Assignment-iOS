@@ -60,12 +60,7 @@ final class DetailsCardsViewController<T: DetailsCardsViewModeling>: UIViewContr
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConstraints()
-        bindInputs(with: viewModel)
         bindOutputs(with: viewModel)
-    }
-    
-    private func bindInputs(with viewModel: T) {
-
     }
     
     func bindOutputs(with viewModel: T) {

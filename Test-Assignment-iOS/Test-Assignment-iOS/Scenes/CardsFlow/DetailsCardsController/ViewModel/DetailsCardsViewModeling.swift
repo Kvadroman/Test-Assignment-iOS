@@ -11,12 +11,8 @@ import UIKit
 protocol DetailsCardsViewModeling: ViewModel where Input: DetailsCardsViewModelingInput, Output: DetailsCardsViewModelingOutput {
 }
 
-protocol DetailsCardsViewModelingInput {
-    var viewDidLoad: PassthroughSubject<Void, Never> { get }
-}
+protocol DetailsCardsViewModelingInput { }
 
 protocol DetailsCardsViewModelingOutput {
     var cardModel: AnyPublisher<Card, Never> { get }
-    var onError: PassthroughSubject<Error, Never> { get }
-    var onClose: PassthroughSubject<Void, Never> { get }
 }

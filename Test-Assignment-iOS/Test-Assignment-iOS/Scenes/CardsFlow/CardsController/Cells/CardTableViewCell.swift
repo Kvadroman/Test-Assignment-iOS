@@ -5,19 +5,11 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
 import UIKit
 
 class CardTableViewCell: UITableViewCell {
     
     static let identifier = "CardTableViewCell"
-    
-    var cancellables: Set<AnyCancellable> = []
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
     
     func configure(with item: Card, and cardMask: CardMaskProtocol?) {
         var configuration = defaultContentConfiguration()

@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum CardType: String, Codable, CaseIterable {
+enum CardType: String, CaseIterable {
     case visa, masterCard
 }
 
-struct Card: Codable, Hashable {
+struct Card: Hashable {
     let cardType: CardType
     let cardNumber: String
     let cardCreatedAt: Date

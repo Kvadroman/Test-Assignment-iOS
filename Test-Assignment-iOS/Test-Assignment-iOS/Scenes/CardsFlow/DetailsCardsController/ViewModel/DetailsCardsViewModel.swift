@@ -10,21 +10,15 @@ import Foundation
 
 final class DetailsCardsViewModel: DetailsCardsViewModeling {
  
-    struct Input: DetailsCardsViewModelingInput {
-        var viewDidLoad: PassthroughSubject<Void, Never>
-    }
+    struct Input: DetailsCardsViewModelingInput { }
     
     struct Output: DetailsCardsViewModelingOutput {
         var cardModel: AnyPublisher<Card, Never>
-        var onError: PassthroughSubject<Error, Never>
-        var onClose: PassthroughSubject<Void, Never>
     }
     
-    lazy var input: Input = Input(viewDidLoad: viewDidLoad)
+    lazy var input: Input = Input()
     
-    lazy var output: Output = Output(cardModel: cardModel,
-                                     onError: onError,
-                                     onClose: onClose)
+    lazy var output: Output = Output(cardModel: cardModel)
     
     // Input
     private let viewDidLoad = PassthroughSubject<Void, Never>()
@@ -34,7 +28,6 @@ final class DetailsCardsViewModel: DetailsCardsViewModeling {
         $card.eraseToAnyPublisher()
     }
     private let onError = PassthroughSubject<Error, Never>()
-    private let onClose = PassthroughSubject<Void, Never>()
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -42,10 +35,5 @@ final class DetailsCardsViewModel: DetailsCardsViewModeling {
     
     init(card: Card) {
         self.card = card
-        bind()
-    }
-    
-    private func bind() {
-
     }
 }

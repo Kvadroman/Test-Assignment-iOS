@@ -72,6 +72,13 @@ final class CardsViewController<T: CardsViewModeling>: UIViewController, Control
                 self?.cardsAdapter.update(items: cards, animated: true)
             }
             .store(in: &cancellables)
+        
+        viewModel.output.onError
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                self?.showToast(message: error.localizedDescription, seconds: 2)
+            }
+            .store(in: &cancellables)
     }
     
     private func setupConstraints() {
@@ -105,7 +112,7 @@ extension CardsViewController {
     }
     
     private func getCommentCellIdentifier() -> String {
-        return CardTableViewCell.identifier
+        CardTableViewCell.identifier
     }
     
     private func renderCell(_ item: Card, _ cell: UITableViewCell) {

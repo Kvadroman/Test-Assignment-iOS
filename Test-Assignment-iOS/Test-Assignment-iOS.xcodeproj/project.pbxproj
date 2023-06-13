@@ -38,6 +38,7 @@
 		001C42672A3795010027D3FD /* DetailsCardsViewModeling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001C42662A3795010027D3FD /* DetailsCardsViewModeling.swift */; };
 		001C42692A3797440027D3FD /* UIColor+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001C42682A3797440027D3FD /* UIColor+hexString.swift */; };
 		001C426B2A3845500027D3FD /* UIView+AddSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001C426A2A3845500027D3FD /* UIView+AddSubviews.swift */; };
+		001C426D2A384E8C0027D3FD /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001C426C2A384E8C0027D3FD /* UIViewController+Alert.swift */; };
 		EFA0C2920D2E0FD64C7D49AE /* Pods_Test_Assignment_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605DF160A28435E1EE3CA064 /* Pods_Test_Assignment_iOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,7 @@
 		001C42662A3795010027D3FD /* DetailsCardsViewModeling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsCardsViewModeling.swift; sourceTree = "<group>"; };
 		001C42682A3797440027D3FD /* UIColor+hexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+hexString.swift"; sourceTree = "<group>"; };
 		001C426A2A3845500027D3FD /* UIView+AddSubviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AddSubviews.swift"; sourceTree = "<group>"; };
+		001C426C2A384E8C0027D3FD /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		1D62CB3097A98B1428DFA8EE /* Pods-Test-Assignment-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test-Assignment-iOS.release.xcconfig"; path = "Target Support Files/Pods-Test-Assignment-iOS/Pods-Test-Assignment-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		2B11A586321F3246C5784A6A /* Pods-Test-Assignment-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test-Assignment-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Test-Assignment-iOS/Pods-Test-Assignment-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		605DF160A28435E1EE3CA064 /* Pods_Test_Assignment_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Test_Assignment_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -311,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				001C42612A378DAE0027D3FD /* UIImage+aspectRatio.swift */,
+				001C426C2A384E8C0027D3FD /* UIViewController+Alert.swift */,
 				001C42682A3797440027D3FD /* UIColor+hexString.swift */,
 				001C426A2A3845500027D3FD /* UIView+AddSubviews.swift */,
 			);
@@ -477,6 +480,7 @@
 				001C42572A376D720027D3FD /* CardTableViewCell.swift in Sources */,
 				001C424D2A3760310027D3FD /* Controller.swift in Sources */,
 				001C42692A3797440027D3FD /* UIColor+hexString.swift in Sources */,
+				001C426D2A384E8C0027D3FD /* UIViewController+Alert.swift in Sources */,
 				001C42652A3791DF0027D3FD /* CardMask.swift in Sources */,
 				001C42362A37540E0027D3FD /* CardsViewController.swift in Sources */,
 				001C42382A3754410027D3FD /* CardsViewModel.swift in Sources */,

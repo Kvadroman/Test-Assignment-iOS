@@ -12,7 +12,6 @@ protocol CardsViewModeling: ViewModel where Input: CardsViewModelingInput, Outpu
 }
 
 protocol CardsViewModelingInput {
-    var viewDidLoad: PassthroughSubject<Void, Never> { get }
     var didAddCard: PassthroughSubject<Void, Never> { get }
     var didSelectItem: PassthroughSubject<Card, Never> { get }
 }

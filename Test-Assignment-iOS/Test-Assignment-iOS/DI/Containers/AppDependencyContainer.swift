@@ -35,7 +35,7 @@ class AppDependencyContainer {
                 let router = resolver.resolve(RouterType.self)!
                 let cardCoordinatorDIC = CardsDependencyContainer(parentContainer: container)
                 let cardCoordinator: (RouterType) -> CardCoordinator = { router in
-                    return cardCoordinatorDIC.makeCardCoordinator(parentRouter: router)
+                    cardCoordinatorDIC.makeCardCoordinator(parentRouter: router)
                 }
                 return AppCoordinator(router: router, cardsCoordinator: cardCoordinator)
             }.inObjectScope(.container)

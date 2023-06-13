@@ -49,13 +49,13 @@ open class Coordinator<DeepLinkType>: PresentableCoordinator<DeepLinkType>, Coor
     }
     
     public func removeChild(_ coordinator: Coordinator<DeepLinkType>?) {
-        
-        if let coordinator = coordinator, let index = childCoordinators.firstIndex(of: coordinator) {
-            childCoordinators.remove(at: index)
+        guard let coordinator, let index = childCoordinators.firstIndex(of: coordinator) else {
+            return
         }
+        childCoordinators.remove(at: index)
     }
     
     open override func toPresentable() -> UIViewController {
-        return router.toPresentable()
+        router.toPresentable()
     }
 }

@@ -30,9 +30,9 @@ open class WindowCoordinator<DeepLinkType>: NSObject, WindowCoordinatorType {
     }
     
     public func removeChild(_ coordinator: Coordinator<DeepLinkType>?) {
-        
-        if let coordinator = coordinator, let index = childCoordinators.firstIndex(of: coordinator) {
-            childCoordinators.remove(at: index)
+        guard let coordinator, let index = childCoordinators.firstIndex(of: coordinator) else {
+            return
         }
+        childCoordinators.remove(at: index)
     }
 }

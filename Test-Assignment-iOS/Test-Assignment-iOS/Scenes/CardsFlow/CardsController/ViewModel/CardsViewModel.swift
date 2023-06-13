@@ -11,7 +11,6 @@ import Foundation
 final class CardsViewModel: CardsViewModeling {
  
     struct Input: CardsViewModelingInput {
-        var viewDidLoad: PassthroughSubject<Void, Never>
         var didAddCard: PassthroughSubject<Void, Never>
         var didSelectItem: PassthroughSubject<Card, Never>
     }
@@ -22,16 +21,13 @@ final class CardsViewModel: CardsViewModeling {
         var onOpenDetailsCard: PassthroughSubject<Card, Never>
     }
     
-    lazy var input: Input = Input(viewDidLoad: viewDidLoad,
-                                  didAddCard: didAddCard,
-                                  didSelectItem: didSelectItem)
+    lazy var input: Input = Input(didAddCard: didAddCard, didSelectItem: didSelectItem)
     
     lazy var output: Output = Output(cardsModel: cardsModel,
                                      onError: onError,
                                      onOpenDetailsCard: onOpenDetailsCard)
     
     // Input
-    private let viewDidLoad = PassthroughSubject<Void, Never>()
     private let didAddCard = PassthroughSubject<Void, Never>()
     private let didSelectItem = PassthroughSubject<Card, Never>()
     
