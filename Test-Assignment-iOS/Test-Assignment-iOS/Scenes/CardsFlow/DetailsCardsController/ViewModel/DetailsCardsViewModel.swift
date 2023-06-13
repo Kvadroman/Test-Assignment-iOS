@@ -5,35 +5,31 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
-import Foundation
+import RxSwift
+import RxCocoa
 
 final class DetailsCardsViewModel: DetailsCardsViewModeling {
- 
+    
     struct Input: DetailsCardsViewModelingInput { }
     
     struct Output: DetailsCardsViewModelingOutput {
-        var cardModel: AnyPublisher<Card, Never>
+        var cardModel: Driver<Card>
     }
     
     lazy var input: Input = Input()
     
     lazy var output: Output = Output(cardModel: cardModel)
     
-    // Input
-    private let viewDidLoad = PassthroughSubject<Void, Never>()
-    
     // Output
-    private var cardModel: AnyPublisher<Card, Never> {
-        $card.eraseToAnyPublisher()
+    private var cardModel: Driver<Card> {
+        card.asDriver(onErrorJustReturn: Card.defaultCard)
     }
-    private let onError = PassthroughSubject<Error, Never>()
     
-    private var cancellables: Set<AnyCancellable> = []
+    private var disposeBag = DisposeBag()
     
-    @Published private var card: Card
+    private var card = BehaviorSubject<Card>(value: Card.defaultCard)
     
     init(card: Card) {
-        self.card = card
+        self.card.onNext(card)
     }
 }

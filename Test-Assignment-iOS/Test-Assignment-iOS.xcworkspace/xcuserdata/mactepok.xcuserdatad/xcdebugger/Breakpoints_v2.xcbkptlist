@@ -3,4 +3,213 @@
    uuid = "DA647BAB-39A9-4C4F-8890-75B3398E4285"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A8138C50-D2E0-4FF2-95EF-C55B758F77B9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewController/CardsViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "bindOutputs(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B4D502C8-D27C-40D9-B6F0-F26CAB133A18"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test-Assignment-iOS/Scenes/Adapters/CardsTableViewAdapter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "update(items:animated:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B4D502C8-D27C-40D9-B6F0-F26CAB133A18 - 2aa0dfb11d4c535f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 1 of Test_Assignment_iOS.CardsTableViewAdapter.update(items: Swift.Array&lt;&#x3c4;_0_0&gt;, animated: Swift.Bool) -&gt; ()"
+                  moduleName = "Test-Assignment-iOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mactepok/Documents/GitHub/Test-Assignment-IOS/Test-Assignment-iOS/Test-Assignment-iOS/Test-Assignment-iOS/Scenes/Adapters/CardsTableViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  uuid = "B4D502C8-D27C-40D9-B6F0-F26CAB133A18 - c8ab30557340e5cf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Test_Assignment_iOS.CardsTableViewAdapter.update(items: Swift.Array&lt;&#x3c4;_0_0&gt;, animated: Swift.Bool) -&gt; ()"
+                  moduleName = "Test-Assignment-iOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mactepok/Documents/GitHub/Test-Assignment-IOS/Test-Assignment-iOS/Test-Assignment-iOS/Test-Assignment-iOS/Scenes/Adapters/CardsTableViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "140">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9E5F0242-721A-47B5-A8E6-08C92111DE91"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewModel/CardsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "bind()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9E5F0242-721A-47B5-A8E6-08C92111DE91 - d1ffeab2c15d761"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (RxSwift.Event&lt;Swift.Array&lt;Test_Assignment_iOS.Card&gt;&gt;) -&gt; () in Test_Assignment_iOS.CardsViewModel.bind() -&gt; ()"
+                  moduleName = "Test-Assignment-iOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mactepok/Documents/GitHub/Test-Assignment-IOS/Test-Assignment-iOS/Test-Assignment-iOS/Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewModel/CardsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "172">
+               </Location>
+               <Location
+                  uuid = "9E5F0242-721A-47B5-A8E6-08C92111DE91 - 26e7d487f85feeac"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Test_Assignment_iOS.CardsViewModel.bind() -&gt; ()"
+                  moduleName = "Test-Assignment-iOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mactepok/Documents/GitHub/Test-Assignment-IOS/Test-Assignment-iOS/Test-Assignment-iOS/Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewModel/CardsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "328">
+               </Location>
+               <Location
+                  uuid = "9E5F0242-721A-47B5-A8E6-08C92111DE91 - d1ffeab2c15d61e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (RxSwift.Event&lt;Swift.Array&lt;Test_Assignment_iOS.Card&gt;&gt;) -&gt; () in Test_Assignment_iOS.CardsViewModel.bind() -&gt; ()"
+                  moduleName = "Test-Assignment-iOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mactepok/Documents/GitHub/Test-Assignment-IOS/Test-Assignment-iOS/Test-Assignment-iOS/Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewModel/CardsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "60">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D376E744-6A20-4A3C-8A06-001B49308CAC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewModel/CardsViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "bind()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D376E744-6A20-4A3C-8A06-001B49308CAC - 26e7d487f85fea29"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Test_Assignment_iOS.CardsViewModel.bind() -&gt; ()"
+                  moduleName = "Test-Assignment-iOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mactepok/Documents/GitHub/Test-Assignment-IOS/Test-Assignment-iOS/Test-Assignment-iOS/Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewModel/CardsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "79"
+                  endingLineNumber = "79"
+                  offsetFromSymbolStart = "1420">
+               </Location>
+               <Location
+                  uuid = "D376E744-6A20-4A3C-8A06-001B49308CAC - 26e7d487f85fed82"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Test_Assignment_iOS.CardsViewModel.bind() -&gt; ()"
+                  moduleName = "Test-Assignment-iOS"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mactepok/Documents/GitHub/Test-Assignment-IOS/Test-Assignment-iOS/Test-Assignment-iOS/Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewModel/CardsViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74"
+                  offsetFromSymbolStart = "1268">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5FE133F6-59E2-4995-8C1B-3D99B3CC20B0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test-Assignment-iOS/Scenes/CardsFlow/CardsController/ViewController/CardsViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "bindInputs(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FC231F4C-E643-42DA-B700-8064DD69A38D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test-Assignment-iOS/Scenes/Adapters/CardsTableViewAdapter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "tableView(_:didSelectRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -5,18 +5,18 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
+import RxSwift
 import CoreData
 import UIKit
 
 protocol CDCardRepositoryProtocol {
-    func retreiveCards() -> AnyPublisher<[Card], Error>
+    func retreiveCards() -> Observable<[Card]>
     func saveCard(with model: Card, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 class CDCardRepository: CDCardRepositoryProtocol {
     
-    private var cancellables: Set<AnyCancellable> = []
+    private var disposeBag: DisposeBag = DisposeBag()
     private var container: NSPersistentContainer?
     private var backgroundContext: NSManagedObjectContext?
     
@@ -42,14 +42,14 @@ class CDCardRepository: CDCardRepositoryProtocol {
         }
     }
     
-    func retreiveCards() -> AnyPublisher<[Card], Error> {
-        let fetchRequest: NSFetchRequest<CardEntity> = CardEntity.fetchRequest()
-        // Create NSSortDescriptor for sorting cardCreatedAt in descending order
-        let sortDescriptor = NSSortDescriptor(key: "cardCreatedAt", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        let cdPublisher = CoreDataPublisher(request: fetchRequest, context: backgroundContext ?? NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType))
-        let mappedPublisher = cdPublisher.map { $0.compactMap { self.mapFrom(cardModel: $0)}}
-        return mappedPublisher.eraseToAnyPublisher()
+    func retreiveCards() -> Observable<[Card]> {
+        let cdPublisher = CDObservable(fetchRequest: CardEntity.fetchRequest(), context: backgroundContext ?? NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType))
+        let mappedPublisher = cdPublisher.asObservable()
+            .map { $0.compactMap { self.mapFrom(cardModel: $0) }}
+            .map { cards in
+                cards.sorted { $0.cardCreatedAt > $1.cardCreatedAt }
+            }
+        return mappedPublisher
     }
     
     func saveCard(with model: Card, completion: @escaping (Result<Void, Error>) -> Void) {

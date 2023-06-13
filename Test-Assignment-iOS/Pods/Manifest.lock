@@ -1,20 +1,34 @@
 PODS:
   - CombineCocoa (0.4.1)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
   - Swinject (2.8.3)
 
 DEPENDENCIES:
   - CombineCocoa
+  - RxCocoa
+  - RxSwift
   - Swinject
 
 SPEC REPOS:
   trunk:
     - CombineCocoa
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - Swinject
 
 SPEC CHECKSUMS:
   CombineCocoa: e5210dbfb480ff251078929459ac17e750e7af1d
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: 37f04c8e6b32a782ddd77ce90f9cf8368e8538fa
+PODFILE CHECKSUM: 7d9cfbb7d633bc4cc1ae5c9a8556b35eb629fe38
 
 COCOAPODS: 1.11.2

@@ -5,102 +5,49 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
-import CombineCocoa
+import RxCocoa
+import RxSwift
 import UIKit
 
-final class CardsTableViewAdapter<Item: Hashable>: NSObject, UITableViewDelegate {
+final class CardsTableViewAdapter<Item: Hashable>: NSObject, UITableViewDataSource, UITableViewDelegate {
     
-    enum Section: CaseIterable {
-        case main
-    }
-    
-    // MARK: - Public properties
-    
-    public var selectItem: AnyPublisher<AnyHashable, Never> {
-        selectedItem.eraseToAnyPublisher()
-    }
-    
-    public var defaultRowAnimation: UITableView.RowAnimation = .automatic {
-        didSet {
-            self.dataSource.defaultRowAnimation = defaultRowAnimation
-        }
-    }
-    
-    // MARK: - Private properties
+    var selectedItem = PublishSubject<Item>()
     
     private let tableView: UITableView
-    private var cancellables: Set<AnyCancellable> = []
-    private var selectedItem = PassthroughSubject<AnyHashable, Never>()
-    
-    private lazy var dataSource: UITableViewDiffableDataSource<Section, Item> = {
-        let dataSource = UITableViewDiffableDataSource<Section, Item>(
-            tableView: tableView,
-            cellProvider: { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
-                let cellIdentifier = self?.cellIdentifier(item) ?? "Cell"
-                let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier,
-                                                         for: indexPath)
-                self?.render(item, cell)
-                return cell
-            }
-        )
-        tableView.delegate = self
-        dataSource.defaultRowAnimation = self.defaultRowAnimation
-        // ---
-        // Set initial dataSource state to empty
-        // This need to fix strange crash with incorrect section count insertion/deletion
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-        let sections = Section.allCases
-        snapshot.appendSections(sections)
-        sections.forEach { snapshot.appendItems([], toSection: $0) }
-        dataSource.apply(snapshot, animatingDifferences: false)
-        // ---
-        return dataSource
-    }()
-    
+    private let disposeBag = DisposeBag()
     private let cellIdentifier: (Item) -> String
-    
     private let render: (Item, UITableViewCell) -> Void
-    
     private var items: [Item] = []
     
-    // MARK: - Initializations and Deallocations
-    
     public init(tableView: UITableView,
-                defaultRowAnimation: UITableView.RowAnimation = .none,
                 registerCells: (UITableView) -> Void,
                 cellIdentifier: @escaping (Item) -> String,
                 render: @escaping (Item, UITableViewCell) -> Void) {
-        self.defaultRowAnimation = defaultRowAnimation
         self.tableView = tableView
-        registerCells(tableView)
         self.cellIdentifier = cellIdentifier
         self.render = render
+        super.init()
+        tableView.dataSource = self
+        tableView.delegate = self
+        registerCells(tableView)
     }
-    
-    // MARK: - Public methods
     
     public func update(items: [Item], animated: Bool = false) {
         guard items != self.items else {
             return
         }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(items, toSection: .main)
-        let reload = {
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-        }
+
+        self.items = items
         if animated {
-            reload()
+            self.tableView.reloadData()
+            
         } else {
-            // Allow diffs without animation.
-            UIView.animate(withDuration: 0) {
-                reload()
+            UIView.performWithoutAnimation {
+                self.tableView.reloadData()
             }
         }
-        self.items = items
     }
-    
+
     public func scrollToRow(at position: Int,
                             at scrollPosition: UITableView.ScrollPosition = .top,
                             animated: Bool = true) {
@@ -111,8 +58,20 @@ final class CardsTableViewAdapter<Item: Hashable>: NSObject, UITableViewDelegate
         )
     }
     
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let item = items[indexPath.row]
+        let cellIdentifier = self.cellIdentifier(item)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        self.render(item, cell)
+        return cell
+    }
+    
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedItem.send(items[indexPath.row])
+        selectedItem.onNext(items[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

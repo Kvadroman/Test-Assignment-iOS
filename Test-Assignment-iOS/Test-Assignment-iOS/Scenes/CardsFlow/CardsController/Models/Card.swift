@@ -20,3 +20,9 @@ struct Card: Hashable {
         hasher.combine(cardCreatedAt)
     }
 }
+
+extension Card {
+    static var defaultCard: Card {
+        Card(cardType: .visa, cardNumber: "1234567891011121", cardCreatedAt: Date())
+    }
+}

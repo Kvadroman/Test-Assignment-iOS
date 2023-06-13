@@ -5,23 +5,24 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
+import RxSwift
+import RxCocoa
 import UIKit
 
 final class CardCoordinator: Coordinator<DeepLink> {
     private let cardsFactory: () -> CardsViewController<CardsViewModel>
     private let detailsCardsFactory: (Card) -> DetailsCardsViewController<DetailsCardsViewModel>
     
-    private var cancellables: Set<AnyCancellable> = []
+    private var disposeBag = DisposeBag()
     
     private lazy var cardsVC: UIViewController = {
         let viewController = cardsFactory()
         viewController.viewModel.output.onOpenDetailsCard
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] card in
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] card in
                 self?.goToDetailsCards(with: card)
-            }
-            .store(in: &viewController.cancellables)
+            })
+            .disposed(by: disposeBag)
         return viewController
     }()
     

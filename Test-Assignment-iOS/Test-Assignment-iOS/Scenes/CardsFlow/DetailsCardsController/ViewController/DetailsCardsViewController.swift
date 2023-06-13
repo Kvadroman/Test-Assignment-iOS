@@ -5,14 +5,14 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
-import CombineCocoa
+import RxCocoa
+import RxSwift
 import UIKit
 
 final class DetailsCardsViewController<T: DetailsCardsViewModeling>: UIViewController, Controller {
     typealias ViewModelType = T
     
-    var cancellables: Set<AnyCancellable> = []
+    let disposeBag = DisposeBag()
     var cardMask: DetailsCardMaskProtocol?
     
     let viewModel: ViewModelType
@@ -65,11 +65,10 @@ final class DetailsCardsViewController<T: DetailsCardsViewModeling>: UIViewContr
     
     func bindOutputs(with viewModel: T) {
         viewModel.output.cardModel
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] card in
+            .drive(onNext: { [weak self] card in
                 self?.setupUI(with: card)
-            }
-            .store(in: &cancellables)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupUI(with card: Card) {

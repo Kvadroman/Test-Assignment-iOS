@@ -5,19 +5,19 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
-import CombineCocoa
+import RxCocoa
+import RxSwift
 import UIKit
 
 final class CardsViewController<T: CardsViewModeling>: UIViewController, Controller {
     typealias ViewModelType = T
     typealias Adapter = CardsTableViewAdapter
     
-    var cancellables: Set<AnyCancellable> = []
+    private var disposeBag: DisposeBag = DisposeBag()
     var cardMask: CardMaskProtocol?
     
     // MARK: - Card Adapter
-    private lazy var cardsAdapter: Adapter<Card> = {
+    private lazy var cardsAdapter: Adapter = {
         return Adapter(tableView: cardsTableView) { [weak self] tableView in
             self?.registerCells(tableView)
         } cellIdentifier: { [weak self] _ in
@@ -56,29 +56,28 @@ final class CardsViewController<T: CardsViewModeling>: UIViewController, Control
     }
     
     private func bindInputs(with viewModel: T) {
-        cardsAdapter.selectItem
-            .receive(on: DispatchQueue.main)
-            .sink { card in
-                guard let card = card as? Card else { return }
-                viewModel.input.didSelectItem.send(card)
-            }
-            .store(in: &cancellables)
+        cardsAdapter.selectedItem
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { card in
+                viewModel.input.didSelectItem.onNext(card)
+            })
+            .disposed(by: disposeBag)
     }
     
     func bindOutputs(with viewModel: T) {
         viewModel.output.cardsModel
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] cards in
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] cards in
                 self?.cardsAdapter.update(items: cards, animated: true)
-            }
-            .store(in: &cancellables)
+            })
+            .disposed(by: disposeBag)
         
         viewModel.output.onError
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] error in
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] error in
                 self?.showToast(message: error.localizedDescription, seconds: 2)
-            }
-            .store(in: &cancellables)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupConstraints() {
@@ -92,7 +91,7 @@ final class CardsViewController<T: CardsViewModeling>: UIViewController, Control
     }
     
     private func setupNavButton() {
-        let imageButton = UIImage(systemName: "plus")
+        let imageButton = UIImage(named: "plus")
         navigationItem.title = "Картки"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: imageButton,
                                                             style: .plain,
@@ -101,7 +100,7 @@ final class CardsViewController<T: CardsViewModeling>: UIViewController, Control
     }
     
     @objc private func rightBarButtonTapped() {
-        viewModel.input.didAddCard.send()
+        viewModel.input.didAddCard.onNext(())
     }
 }
 

@@ -5,30 +5,34 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
 import CoreData
 import Foundation
+import os.log
+import RxCocoa
+import RxSwift
 
-class CoreDataPublisher<Entity>: NSObject, NSFetchedResultsControllerDelegate, Publisher where Entity: NSManagedObject {
-    typealias Output = [Entity]
-    typealias Failure = Error
-  
-    private let request: NSFetchRequest<Entity>
+class CDObservable<T>: NSObject, ObservableType, NSFetchedResultsControllerDelegate where T: NSManagedObject {
+    private var fetchedResultsController: NSFetchedResultsController<NSManagedObject>?
     private let context: NSManagedObjectContext
-    private let subject: CurrentValueSubject<[Entity], Failure>
-    private var resultController: NSFetchedResultsController<NSManagedObject>?
+    private let fetchRequest: NSFetchRequest<T>
+    private let results = BehaviorSubject<[T]>(value: [])
     private var subscriptions = 0
-  
-      init(request: NSFetchRequest<Entity>, context: NSManagedObjectContext) {
-        if request.sortDescriptors == nil { request.sortDescriptors = [] }
-        self.request = request
+
+    typealias Element = [T]
+
+    init(fetchRequest: NSFetchRequest<T>, context: NSManagedObjectContext) {
+        if fetchRequest.sortDescriptors == nil {
+            fetchRequest.sortDescriptors = []
+        }
+
+        self.fetchRequest = fetchRequest
         self.context = context
-        subject = CurrentValueSubject([])
         super.init()
     }
-  
-      func receive<S>(subscriber: S)
-        where S: Subscriber, CoreDataPublisher.Failure == S.Failure, CoreDataPublisher.Output == S.Input {
+
+    // MARK: ObservableType implementation
+    func subscribe<Observer>(_ observer: Observer) -> Disposable
+        where Observer: ObserverType, CDObservable.Element == Observer.Element {
         var start = false
 
         objc_sync_enter(self)
@@ -37,64 +41,71 @@ class CoreDataPublisher<Entity>: NSObject, NSFetchedResultsControllerDelegate, P
         objc_sync_exit(self)
 
         if start {
-            let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context,
-                                                        sectionNameKeyPath: nil, cacheName: nil)
+            let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                        managedObjectContext: context,
+                                                        sectionNameKeyPath: nil,
+                                                        cacheName: nil)
             controller.delegate = self
             context.perform {
                 do {
                     try controller.performFetch()
                     let result = controller.fetchedObjects ?? []
-                    self.subject.send(result)
+                    self.results.onNext(result)
                 } catch {
-                    self.subject.send(completion: .failure(error))
+                    os_log("Could not fetch objects %@", error.localizedDescription)
                 }
             }
-            resultController = controller as? NSFetchedResultsController<NSManagedObject>
+            fetchedResultsController = controller as? NSFetchedResultsController<NSManagedObject>
         }
-        CoreDataSubscription(fetchPublisher: self, subscriber: AnySubscriber(subscriber))
+
+        return FetcherDisposable(fetcher: self, observer: observer)
     }
-  
-      func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        let result = controller.fetchedObjects as? [Entity] ?? []
-        subject.send(result)
+
+    // MARK: NSFetchedResultsControllerDelegate implementation
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        let result = controller.fetchedObjects as? [T] ?? []
+        results.onNext(result)
     }
-  
-      private func dropSubscription() {
+
+    // MARK: Private Stuff
+    private func dropSubscription() {
+        var stop = false
+
         objc_sync_enter(self)
         subscriptions -= 1
-        let stop = subscriptions == 0
+        stop = subscriptions == 0
         objc_sync_exit(self)
 
         if stop {
-            resultController?.delegate = nil
-            resultController = nil
+            fetchedResultsController?.delegate = nil
+            fetchedResultsController = nil
         }
     }
 
-    private class CoreDataSubscription: Subscription {
-        private var fetchPublisher: CoreDataPublisher?
-        private var cancellable: Set<AnyCancellable> = []
+    // MARK: Disposable
+    private class FetcherDisposable: Disposable {
+        var fetcher: CDObservable?
+        var disposable: Disposable?
 
-        @discardableResult
-        init(fetchPublisher: CoreDataPublisher, subscriber: AnySubscriber<Output, Failure>) {
-            self.fetchPublisher = fetchPublisher
-            
-            subscriber.receive(subscription: self)
-            
-            fetchPublisher.subject
-                .sink(receiveCompletion: { completion in
-                    subscriber.receive(completion: completion)
-                }, receiveValue: { value in
-                    _ = subscriber.receive(value)
-                })
-                .store(in: &cancellable)
+        init<Observer>(fetcher: CDObservable,
+                       observer: Observer) where Observer: ObserverType, CDObservable.Element == Observer.Element {
+            self.fetcher = fetcher
+
+            self.disposable = fetcher.results.subscribe(onNext: {
+                observer.onNext($0)
+            }, onError: {
+                observer.onError($0)
+            }, onCompleted: {
+                observer.onCompleted()
+            }, onDisposed: {})
         }
 
-        func request(_ demand: Subscribers.Demand) { }
+        func dispose() {
+            disposable?.dispose()
+            disposable = nil
 
-        func cancel() {
-            fetchPublisher?.dropSubscription()
-            fetchPublisher = nil
+            fetcher?.dropSubscription()
+            fetcher = nil
         }
     }
 }

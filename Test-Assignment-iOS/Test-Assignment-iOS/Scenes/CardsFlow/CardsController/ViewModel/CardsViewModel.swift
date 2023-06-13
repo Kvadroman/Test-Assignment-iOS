@@ -5,42 +5,37 @@
 //  Created by Ивченко Антон on 12.06.2023.
 //
 
-import Combine
 import Foundation
+import RxSwift
+import RxCocoa
 
 final class CardsViewModel: CardsViewModeling {
- 
+    
     struct Input: CardsViewModelingInput {
-        var didAddCard: PassthroughSubject<Void, Never>
-        var didSelectItem: PassthroughSubject<Card, Never>
+        let didAddCard: AnyObserver<Void>
+        let didSelectItem: AnyObserver<Card>
     }
     
     struct Output: CardsViewModelingOutput {
-        var cardsModel: AnyPublisher<[Card], Never>
-        var onError: PassthroughSubject<Error, Never>
-        var onOpenDetailsCard: PassthroughSubject<Card, Never>
+        let cardsModel: Observable<[Card]>
+        let onError: Observable<Error>
+        let onOpenDetailsCard: Observable<Card>
     }
     
-    lazy var input: Input = Input(didAddCard: didAddCard, didSelectItem: didSelectItem)
+    lazy var input: Input = Input(didAddCard: didAddCardSubject.asObserver(),
+                                  didSelectItem: didSelectItemSubject.asObserver())
+    lazy var output: Output = Output(cardsModel: cardModelSubject.asObservable(),
+                                     onError: onErrorSubject.asObservable(),
+                                     onOpenDetailsCard: onOpenDetailsCardSubject.asObservable())
     
-    lazy var output: Output = Output(cardsModel: cardsModel,
-                                     onError: onError,
-                                     onOpenDetailsCard: onOpenDetailsCard)
+    private let didAddCardSubject = PublishSubject<Void>()
+    private let didSelectItemSubject = PublishSubject<Card>()
     
-    // Input
-    private let didAddCard = PassthroughSubject<Void, Never>()
-    private let didSelectItem = PassthroughSubject<Card, Never>()
+    private let cardModelSubject = PublishSubject<[Card]>()
+    private let onErrorSubject = PublishSubject<Error>()
+    private let onOpenDetailsCardSubject = PublishSubject<Card>()
     
-    // Output
-    private var cardsModel: AnyPublisher<[Card], Never> {
-        $cardModel.eraseToAnyPublisher()
-    }
-    private let onError = PassthroughSubject<Error, Never>()
-    private let onOpenDetailsCard = PassthroughSubject<Card, Never>()
-    
-    private var cancellables: Set<AnyCancellable> = []
-    
-    @Published private var cardModel: [Card] = []
+    private let disposeBag = DisposeBag()
     private let cdRepo: CDCardRepositoryProtocol
     
     init(cdRepo: CDCardRepositoryProtocol) {
@@ -50,32 +45,34 @@ final class CardsViewModel: CardsViewModeling {
     
     private func bind() {
         cdRepo.retreiveCards()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case .finished:
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] event in
+                switch event {
+                case .next(let model):
+                    self?.cardModelSubject.onNext(model)
+                case .error(let error):
+                    self?.onErrorSubject.onNext(error)
+                default:
                     break
-                case .failure(let error):
-                    self?.onError.send(error)
                 }
-            } receiveValue: { [weak self] model in
-                self?.cardModel = model
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
         
-        didAddCard
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
+        didAddCardSubject
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
                 self?.addCard()
-            }
-            .store(in: &cancellables)
+            })
+            .disposed(by: disposeBag)
         
-        didSelectItem
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] card in
-                self?.output.onOpenDetailsCard.send(card)
-            }
-            .store(in: &cancellables)
+        didSelectItemSubject
+            .observe(on: MainScheduler.instance)
+            .bind(to: onOpenDetailsCardSubject)
+            .disposed(by: disposeBag)
+        
+        cdRepo.retreiveCards()
+            .bind(to: cardModelSubject)
+            .disposed(by: disposeBag)
     }
     
     private func addCard() {
@@ -85,7 +82,7 @@ final class CardsViewModel: CardsViewModeling {
             case .success:
                 print("\(card) was successfully created 🥶🥶🥶")
             case .failure(let error):
-                self?.onError.send(error)
+                self?.onErrorSubject.onNext(error)
             }
         }
     }

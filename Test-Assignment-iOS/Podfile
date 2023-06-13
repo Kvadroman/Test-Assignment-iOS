@@ -8,5 +8,7 @@ target 'Test-Assignment-iOS' do
   # Pods for Test-Assignment-iOS
 pod 'Swinject'
 pod 'CombineCocoa'
+pod 'RxSwift'
+pod 'RxCocoa'
 
 end

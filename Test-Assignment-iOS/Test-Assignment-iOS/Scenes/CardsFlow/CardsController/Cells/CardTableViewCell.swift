@@ -10,14 +10,14 @@ import UIKit
 class CardTableViewCell: UITableViewCell {
     
     static let identifier = "CardTableViewCell"
+    @IBOutlet weak var cardImageView: UIImageView!
+    @IBOutlet weak var bankNumberLabel: UILabel!
     
     func configure(with item: Card, and cardMask: CardMaskProtocol?) {
-        var configuration = defaultContentConfiguration()
         if let image = UIImage(named: item.cardType.rawValue) {
-            configuration.image = image.getScaledImage(with: 50)
+            cardImageView.image = image.getScaledImage(with: 50)
         }
-        configuration.text = cardMask?.mask(cardNumber: item.cardNumber)
-        contentConfiguration = configuration
+        bankNumberLabel.text = cardMask?.mask(cardNumber: item.cardNumber)
     }
     
     static func nib() -> UINib {
