@@ -10,5 +10,6 @@ pod 'Swinject'
 pod 'CombineCocoa'
 pod 'RxSwift'
 pod 'RxCocoa'
+pod 'SnapKit'
 
 end

@@ -7,6 +7,7 @@
 
 import RxCocoa
 import RxSwift
+import SnapKit
 import UIKit
 
 final class CardsViewController<T: CardsViewModeling>: UIViewController, Controller {
@@ -82,12 +83,9 @@ final class CardsViewController<T: CardsViewModeling>: UIViewController, Control
     
     private func setupConstraints() {
         view.addSubview(cardsTableView)
-        NSLayoutConstraint.activate([
-            cardsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            cardsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            cardsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            cardsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-        ])
+        cardsTableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
     }
     
     private func setupNavButton() {

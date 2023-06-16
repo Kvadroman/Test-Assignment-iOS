@@ -7,6 +7,7 @@
 
 import RxCocoa
 import RxSwift
+import SnapKit
 import UIKit
 
 final class DetailsCardsViewController<T: DetailsCardsViewModeling>: UIViewController, Controller {
@@ -82,18 +83,28 @@ final class DetailsCardsViewController<T: DetailsCardsViewModeling>: UIViewContr
         view.backgroundColor = .white
         view.addSubview(cardView)
         cardView.addSubviews([bankTitle, cardNumberTitle, cardTypeImage])
-        NSLayoutConstraint.activate([
-            cardView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            cardView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            cardView.widthAnchor.constraint(equalToConstant: 300),
-            cardView.heightAnchor.constraint(equalToConstant: 200),
-            bankTitle.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-            bankTitle.centerYAnchor.constraint(equalTo: cardView.centerYAnchor, constant: -36),
-            cardNumberTitle.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-            cardNumberTitle.centerYAnchor.constraint(equalTo: cardView.centerYAnchor, constant: 36),
-            cardTypeImage.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
-            cardTypeImage.centerYAnchor.constraint(equalTo: cardView.centerYAnchor, constant: 36),
-        ])
+
+        cardView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(300)
+            make.height.equalTo(200)
+        }
+
+        bankTitle.snp.makeConstraints { make in
+            make.leading.equalTo(cardView.snp.leading).offset(16)
+            make.centerY.equalTo(cardView.snp.centerY).offset(-36)
+        }
+
+        cardNumberTitle.snp.makeConstraints { make in
+            make.leading.equalTo(cardView.snp.leading).offset(16)
+            make.centerY.equalTo(cardView.snp.centerY).offset(36)
+        }
+
+        cardTypeImage.snp.makeConstraints { make in
+            make.trailing.equalTo(cardView.snp.trailing).offset(-16)
+            make.centerY.equalTo(cardView.snp.centerY).offset(36)
+        }
     }
     
     deinit {
